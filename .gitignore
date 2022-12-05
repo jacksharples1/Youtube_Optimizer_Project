@@ -11,3 +11,6 @@ raw_data/
 .env
 nlp_pickles/
 .python_version
+bucket_data_short
+
+
