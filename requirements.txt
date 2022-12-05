@@ -1,0 +1,70 @@
+langdetect
+nltk
+opencv-python-headless
+mlflow
+fastapi
+uvicorn
+
+
+
+
+colorama
+ipdb
+ipykernel
+matplotlib
+numpy
+pandas
+nbresult
+pygeohash
+pytest
+seaborn
+scikit-learn
+yapf
+# Trick to install the version of Tensorflow depending on your processor: darwin == Mac, ARM == M1
+tensorflow-macos==2.10.0; sys_platform == 'darwin' and 'ARM' in platform_version # Mac M-chips
+tensorflow==2.10.0; sys_platform == 'darwin' and 'ARM' not in platform_version # Mac Intel chips
+tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
+
+# prevent bq 3+ db-dtypes package error when running training from bq
+google-cloud-bigquery<3.0.0
+google-cloud-storage
+pyarrow
+
+mlflow==1.27.0
+
+python-dotenv
+prefect<2
+prefect[viz]
+psycopg2-binary
+# graphviz
+# psycopg2
+# prefect
+# tqdm
+# opencv-python
+# langdetect
+# python-dotenv
+# pytest
+# pylint
+# ipdb
+# jupyterlab
+# numpy
+# pandas
+# matplotlib
+# seaborn
+# scikit-learn
+# requests
+# google.cloud
+# tqdm
+# datetime
+# google-api-core==2.10.2
+# google-auth==2.12.0
+# google-auth-oauthlib==0.4.6
+# google-cloud==0.34.0
+# google-cloud-bigquery==3.3.5
+# google-cloud-bigquery-storage==2.16.2
+# google-cloud-core==2.3.2
+# google-cloud-storage==2.6.0
+# google-crc32c==1.5.0
+# google-pasta==0.2.0
+# google-resumable-media==2.4.0
+# googleapis-common-protos==1.56.4

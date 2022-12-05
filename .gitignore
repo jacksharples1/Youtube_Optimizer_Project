@@ -1,3 +1,4 @@
+
 .DS_Store
 .ipynb_checkpoints
 NF_CNN_images.ipynb
@@ -7,3 +8,5 @@ images_data
 bucket_data
 bucket_data_2/
 bucket_data_short
+raw_data/
+.env
