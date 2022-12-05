@@ -1,4 +1,3 @@
-
 .DS_Store
 .ipynb_checkpoints
 NF_CNN_images.ipynb
@@ -7,6 +6,11 @@ massive-pen-365111-8eaed18fb748.json
 images_data
 bucket_data
 bucket_data_2/
-bucket_data_short
+models/
 raw_data/
 .env
+nlp_pickles/
+.python_version
+bucket_data_short
+
+
