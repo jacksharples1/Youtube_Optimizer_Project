@@ -2,12 +2,13 @@
 .ipynb_checkpoints
 .env
 .python_version
-api_test.py
+/api_test.py
+/api_test.ipynb
 build/
 __pycache__/
 models/*
 ! models/.gitkeep
 raw_data/*
-! raw_data/.gitkeep 
+! raw_data/.gitkeep
 nlp_pickles/*
 ! nlp_pickles/.gitkeep
