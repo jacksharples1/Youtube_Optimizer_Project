@@ -4,10 +4,7 @@ opencv-python-headless
 mlflow
 fastapi
 uvicorn
-
-
-
-
+isodate
 colorama
 ipdb
 ipykernel

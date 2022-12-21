@@ -1,6 +1,7 @@
 import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from youtube.ml_logic.params import TIMESTAMP
 import pickle
 import time
 
@@ -38,3 +39,14 @@ def tokenizer(X_train_nlp, X_test_nlp, evaluate):
     print(f'Pickled with timestamp: {timestamp}')
 
     return X_train_pad, X_test_pad, input_length, vocab_size, timestamp
+
+def tokenizer_pred(X):
+    
+    # Loading tokenizer and input length
+    with open(f'nlp_pickles/tokenizer_{TIMESTAMP}.pickle', 'rb') as handle:
+        tokenizer = pickle.load(handle)
+    with open(f'nlp_pickles/input_length_{TIMESTAMP}.pickle', 'rb') as handle:
+        input_length = pickle.load(handle)
+
+    X_token = tokenizer.texts_to_sequences(X)
+    return pad_sequences(X_token, padding='post', maxlen=input_length,  dtype='float32')

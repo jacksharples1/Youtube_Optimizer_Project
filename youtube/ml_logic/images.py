@@ -10,7 +10,7 @@ start = time.perf_counter()
 from tensorflow.keras import Model, Sequential
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.applications.xception import Xception, preprocess_input
-from tensorflow.keras.layers import AveragePooling2D, Dense, Flatten
+from tensorflow.keras.layers import AveragePooling2D, Dense, Flatten, BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras import models, layers
 
@@ -40,7 +40,10 @@ def initialize_model_images(learning_rate) -> Model:
             AveragePooling2D(pool_size = (3,3)),
             Flatten(),
             Dense(50,activation = 'relu'),
+            BatchNormalization(),
+            # Dense(5,activation = 'relu')))
             Dense(1,activation = 'linear')))
+
 
         optimizer = Adam(learning_rate=learning_rate)
 

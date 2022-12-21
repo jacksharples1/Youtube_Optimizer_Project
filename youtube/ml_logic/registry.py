@@ -1,5 +1,5 @@
 import mlflow
-import glob
+import os
 from youtube.ml_logic.params import TIMESTAMP
 from colorama import Fore, Style
 from tensorflow.keras import  models
@@ -11,9 +11,8 @@ def save_model(model,params,metrics, timestamp):
 
     # Set mlflow env params
     # $CHA_BEGIN
-    mlflow_tracking_uri = 'https://mlflow.lewagon.ai'
-    mlflow_experiment = 'youtube_optimizer_experiment_jacksharples1'
-    mlflow_model_name = 'youtube_optimizer_jacksharples1'
+    mlflow_tracking_uri = os.environ.get('MLFLOW_TRACKING_URI')
+    mlflow_experiment = os.environ.get('MLFLOW_EXPERIMENT')
     # $CHA_END
 
     # configure mlflow
@@ -38,16 +37,6 @@ def save_model(model,params,metrics, timestamp):
             print('Saving metrics to mlflow...')
             mlflow.log_metrics(metrics)
             print("\n✅ Metrics saved to mlflow")
-        # $CHA_END
-
-        # TODO: workout how to save models to mlflow
-        # $CHA_BEGIN
-        # if model is not None:
-        #     print('Saving model to mlflow...')
-        #     mlflow.keras.log_model(keras_model=model,
-        #                             artifact_path="model",
-        #                             keras_module="tensorflow.keras",
-        #                             registered_model_name=mlflow_model_name)
         # $CHA_END
 
     if model is not None:
@@ -83,38 +72,3 @@ def load_model(model_name):
     print("\n✅ model loaded from disk")
 
     return model
-
-
-    # if os.environ.get("MODEL_TARGET") == "mlflow":
-    #     stage = "Production"
-
-    #     print(Fore.BLUE + f"\nLoad model {stage} stage from mlflow..." + Style.RESET_ALL)
-
-    #     # load model from mlflow
-    #     model = None
-    #     # $CHA_BEGIN
-    #     mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI"))
-
-    #     mlflow_model_name = os.environ.get("MLFLOW_MODEL_NAME")
-
-    #     model_uri = f"models:/{mlflow_model_name}/{stage}"
-    #     print(f"- uri: {model_uri}")
-
-    #     try:
-    #         model = mlflow.keras.load_model(model_uri=model_uri)
-    #         print("\n✅ model loaded from mlflow")
-    #     except:
-    #         print(f"\n❌ no model in stage {stage} on mlflow")
-    #         return None
-
-    #     if save_copy_locally:
-    #         from pathlib import Path
-
-    #         # Create the LOCAL_REGISTRY_PATH directory if it does exist
-    #         Path(LOCAL_REGISTRY_PATH).mkdir(parents=True, exist_ok=True)
-    #         timestamp = time.strftime("%Y%m%d-%H%M%S")
-    #         model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", timestamp)
-    #         model.save(model_path)
-    #     # $CHA_END
-
-    #     return model

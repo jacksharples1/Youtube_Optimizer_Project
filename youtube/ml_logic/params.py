@@ -1,8 +1,11 @@
+import os
 """
 youtube model package params
 load and validate the environment variables in the `.env`
 """
 
-DATASET = "small"             # ["small","lunch3", "lunch4", "finalesterest"]
-BUCKET_NAME = "mvp_youtube_optimizer"  # ["mvp_youtube_optimizer"]
-TIMESTAMP = "20221204-220645" # ["20221204-144654"]
+DATASET = "small" # ["small","lunch3", "lunch4", "finalesterest", "merge"]
+TABULAR = False
+LOG = True
+BUCKET_NAME = os.environ.get("BUCKET_NAME")
+TIMESTAMP = "20221214-160918" # ["20221204-144654"]

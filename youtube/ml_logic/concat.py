@@ -4,19 +4,23 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping
 
 
-def initialize_model_concat(model_nlp, model_images, learning_rate=1e-4):
+def initialize_model_concat(model_nlp, model_images, model_tabular, learning_rate=1e-4):
 
-    # model_nlp = build_model_nlp() # comment-out to keep pre-trained weights not to start from scratch
     input_nlp = model_nlp.input
     output_nlp = model_nlp.output
 
-    # model_num = build_model_num() # comment-out to keep pre-trained weights not to start from scratch
     input_images = model_images.input
     output_images = model_images.output
 
-    inputs = [input_nlp, input_images]
+    if model_tabular:
+        input_tabular = model_tabular.input
+        output_tabular = model_tabular.output
+        inputs = [input_nlp, input_images, input_tabular]
+        combined = layers.concatenate([output_nlp, output_images, output_tabular])
 
-    combined = layers.concatenate([output_nlp, output_images])
+    else:
+        inputs = [input_nlp, input_images]
+        combined = layers.concatenate([output_nlp, output_images])
 
     x = layers.Dense(10, activation="relu")(combined)
 
@@ -33,7 +37,9 @@ def initialize_model_concat(model_nlp, model_images, learning_rate=1e-4):
 def train_model_concat(model,
                        X_train_pad,
                        X_train_images,
+                       X_train_tabular,
                        y_train,
+                       tabular=False,
                        batch_size=32,
                        patience=10,
                        epochs=1000,
@@ -42,12 +48,18 @@ def train_model_concat(model,
 
     es = EarlyStopping(patience=patience)
 
-    history = model.fit(x=[X_train_pad, X_train_images],
+    if tabular:
+        x=[X_train_pad, X_train_images, X_train_tabular]
+    else:
+        x=[X_train_pad, X_train_images]
+
+    history = model.fit(x=x,
                         y=y_train,
                         validation_split=validation_split,
                         epochs=epochs,
                         batch_size=batch_size,
                         callbacks=[es])
+
 
     print(f"\n✅ Concat model trained ({len(X_train_pad)} rows)")
     return model, history

@@ -1,16 +1,13 @@
 .DS_Store
 .ipynb_checkpoints
-NF_CNN_images.ipynb
-local_thumbnails
-massive-pen-365111-8eaed18fb748.json
-images_data
-bucket_data
-bucket_data_2/
-models/
-raw_data/
 .env
-nlp_pickles/
 .python_version
-bucket_data_short
-
-
+api_test.py
+build/
+__pycache__/
+models/*
+! models/.gitkeep
+raw_data/*
+! raw_data/.gitkeep 
+nlp_pickles/*
+! nlp_pickles/.gitkeep

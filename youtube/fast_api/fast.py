@@ -41,69 +41,57 @@ async def test_predict(input: Request):
     string = data['text']
     image = np.array(data['image'])
 
-    model = app.state.model
-
     # Loading tokenizer and input length
     with open(f'nlp_pickles/tokenizer_{TIMESTAMP}.pickle', 'rb') as handle:
         tokenizer = pickle.load(handle)
     with open(f'nlp_pickles/input_length_{TIMESTAMP}.pickle', 'rb') as handle:
         input_length = pickle.load(handle)
 
+    #TODO rewrite this section
     # Process real input
-    string_preprocessed = preprocessing(string)
-
+    string_preprocessed = []
+    for title in string:
+        title_preprocessed = preprocessing(title)
+        string_preprocessed.append(title_preprocessed)
 
     # Tokenizer
-    X_test_token = tokenizer.texts_to_sequences([string_preprocessed])
+    X_test_token = tokenizer.texts_to_sequences(string_preprocessed)
     X_test_pad = pad_sequences(X_test_token, padding='post', maxlen=input_length,  dtype='float32')
 
-    # # Preprepared testing inputs
-    # X_pred_nlp_test = np.load(f'./raw_data/single_nlp_pred.npy')
-    # X_pred_images_test = np.load(f'./raw_data/single_images_pred.npy')
+
+    images_list = []
+    titles_list = []
+    indices = []
+    index = 0
+    for i in X_test_pad:
+        images_list.extend(image)
+        for n in range(len(image)):
+            titles_list.extend([i])
+            indices.append((index,n))
+        index +=1
+
+    X_pred_comb = [np.array(titles_list),np.array(images_list)]
+
+    model = app.state.model
+    try:
+        y_pred_comb = model.predict(X_pred_comb)
+        print('Y_pred_comb')
+        print(y_pred_comb)
+        print(indices)
+
+    except Exception as e:
+        print(e)
+
+    result_dict = {'prediction':[y_pred_comb],'index':[indices]}
+    print(y_pred_comb[0][0])
+    print(indices[0])
+    result_dict_single = {'prediction':y_pred_comb[0][0],'index':indices[0]}
+    print(result_dict)
 
 
-    X_pred = [X_test_pad,image]
-
-    y_pred = model.predict(X_pred)
-
-    return dict(guess = string,
-                prediction=f'{int(y_pred[0][0],)} views',
+    return dict(prediction = f"{y_pred_comb}",
+                index=f"{indices}",
                 )
-
-
-# @app.get("/test_predict")
-# def test_predict(string):
-
-#     model = app.state.model
-
-#     # Loading tokenizer and input length
-#     with open(f'nlp_pickles/tokenizer_{TIMESTAMP}.pickle', 'rb') as handle:
-#         tokenizer = pickle.load(handle)
-#     with open(f'nlp_pickles/input_length_{TIMESTAMP}.pickle', 'rb') as handle:
-#         input_length = pickle.load(handle)
-
-#     # Process real input
-#     string_preprocessed = preprocessing(string)
-
-
-#     # Tokenizer
-#     X_test_token = tokenizer.texts_to_sequences([string_preprocessed])
-#     X_test_pad = pad_sequences(X_test_token, padding='post', maxlen=input_length,  dtype='float32')
-
-
-
-#     # Preprepared testing inputs
-#     X_pred_nlp_test = np.load(f'./raw_data/single_nlp_pred.npy')
-#     X_pred_images_test = np.load(f'./raw_data/single_images_pred.npy')
-
-
-#     X_pred = [X_test_pad,X_pred_images_test]
-
-#     y_pred = model.predict(X_pred)
-
-#     return dict(guess = string,
-#                 prediction=f'{int(y_pred[0][0],)} views',
-#                 )
 
 @app.get("/")
 def root():
