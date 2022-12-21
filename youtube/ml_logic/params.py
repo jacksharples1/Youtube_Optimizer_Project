@@ -8,4 +8,4 @@ DATASET = "small" # ["small","lunch3", "lunch4", "finalesterest", "merge"]
 TABULAR = False
 LOG = True
 BUCKET_NAME = os.environ.get("BUCKET_NAME")
-TIMESTAMP = "20221214-160918" # ["20221204-144654"]
+TIMESTAMP = "20221220-232504" # ["20221204-144654"]

@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 from youtube.ml_logic.processnlp import preprocessing
 from youtube.ml_logic.registry import load_model
-from youtube.ml_logic.params import TIMESTAMP
+from youtube.ml_logic.params import TIMESTAMP, LOG
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras import Model, models
 
@@ -75,6 +75,8 @@ async def test_predict(input: Request):
     model = app.state.model
     try:
         y_pred_comb = model.predict(X_pred_comb)
+        if LOG:
+            y_pred_comb = np.exp(y_pred_comb) -1
         print('Y_pred_comb')
         print(y_pred_comb)
         print(indices)
